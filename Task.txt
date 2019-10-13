@@ -1,0 +1,34 @@
+Your task is to program a mini game with the following mechanics: 
+ 
+In a fixed position on the screen there is a space station that has one torpedo launcher. 
+The outer space is full of debris and rocks floating around that can hit the station and damage it. 
+Player wants to defend the station by shooting and taking them down. 
+Every screen click initiates a torpedo launch with a trajectory defined by the input coordinates. 
+The launcher has a cooldown, so spamming torpedos is not possible. 
+Since the launch does not happen immediately because of the cooldown, 
+we want to help the player and keep track of all firing actions. 
+Once the cooldown is over, the next recorded firing command should be executed. 
+ 
+The station has hit points. Player loses when HP is below 0. 
+Winning logic is up to you. 
+It can be configurable levels or just an infinite gameplay with best score saving. 
+ 
+The game should look simple, but complete. 
+Therefore, there must be GUI with at least starting menu, play button, 
+game over screen, etc. While maintaining the real game,
+ UIs are rapidly changing, so the choice of design patterns becomes crucial. 
+ Keep this in mind. 
+ 
+As an extra task, consider implementing resource handling. 
+Let us pretend that every graphical object creation is super heavy and must be split into smaller steps. 
+We don’t want the game to be freezing occasionally. 
+To handle that, you should only allow one step of object creation to be executed in one update loop. 
+Note that this must not affect the simulation, the objects need to 
+be moving and functioning before the graphical object creation. 
+ 
+Assumptions and requirements: 
+ ● There is no gravitational force, therefore every object must move at a constant velocity once created. 
+ ● Critical game parameters must be configurable.
+ ● All player commands should be recorded and executed as soon as the launcher is ready for the next shoot. 
+ ● Memory is important. Such aspects as objects lifetime, scopes, and garbage collection must be well thought. 
+ ● Don’t spend time doing pretty graphics. Use commonly available assets or even basic primitives. 
