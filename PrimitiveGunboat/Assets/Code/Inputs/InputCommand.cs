@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class InputCommand
+public struct InputCommand
 {
     public Vector3 Coords;
 }
@@ -12,5 +12,5 @@ public enum CommandType
 {
     None = 0,
     Fire,
-
+    
 }

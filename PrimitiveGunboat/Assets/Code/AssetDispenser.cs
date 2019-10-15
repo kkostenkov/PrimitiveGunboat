@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IAssetDispenser
 {
     SpaceStationController GetSpaceStation();
-    Torpedo TakeProjectile(Transform parent=null);
+    Torpedo TakeProjectile();
     void PutProjectile(Torpedo torpedo);
 }
 
@@ -17,22 +17,31 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
 
     [SerializeField]
     private Torpedo torpedo;
+    private const string TORPEDO_POOL = "torpedoes";
 
     [SerializeField]
     private List<GameObject> enemies;
+
+    private AssetPool pools;
+    private void Awake()
+    {
+        pools = new AssetPool();
+        pools.CreatePool(TORPEDO_POOL, torpedo.gameObject);
+    }
 
     public SpaceStationController GetSpaceStation()
     {
          return spaceStation;
     }
-    public Torpedo TakeProjectile(Transform parent=null)
+
+    public Torpedo TakeProjectile()
     {
-        return GameObject.Instantiate(torpedo, parent);
+        return pools.TakeFrom(TORPEDO_POOL).GetComponent<Torpedo>();
     }
 
     public void PutProjectile(Torpedo torpedo)
     {
         torpedo.Defuse();
-        GameObject.Destroy(torpedo);
+        pools.PutTo(TORPEDO_POOL, torpedo.gameObject);
     }
 }

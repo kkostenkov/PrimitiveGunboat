@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Torpedo : MonoBehaviour
 {
+    public event Action<Torpedo> Died;
     private Transform selfTransform;
     private Vector3 movementDirection;
     private float lifetime;
@@ -16,6 +17,11 @@ public class Torpedo : MonoBehaviour
 
     void Update()
     {
+        if (!IsAlive)
+        {
+            gameObject.SetActive(false);
+            Died?.Invoke(this);
+        }
         lifetime += Time.deltaTime;
         selfTransform.position = selfTransform.position + movementDirection * Settings.TorpedoSpeed * Time.deltaTime;
     }
@@ -33,6 +39,7 @@ public class Torpedo : MonoBehaviour
 
     internal void Defuse()
     {
+        Died = null;
         gameObject.SetActive(false);
         lifetime = 0;
     }

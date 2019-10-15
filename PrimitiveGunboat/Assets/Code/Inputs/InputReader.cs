@@ -27,7 +27,11 @@ public class InputReader : ICommandSource
             commandsThisFrame ^= CommandType.Fire;
             var mousePos = Input.mousePosition;
             var point = sessionCamera.ScreenToWorldPoint(mousePos);
-            allInputs[(int)CommandType.Fire].Coords = point;
+            var fireCommand = new InputCommand()
+            {
+                Coords = point
+            };
+            allInputs[(int)CommandType.Fire] = fireCommand;
         }
     }
 
