@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
 public class InputReader : ICommandSource
 {
-    private Camera sessionCamera;
+    private readonly Func<Vector3, Vector3> screenToWorld;
     private CommandType commandsThisFrame;
 
     private Dictionary<int, InputCommand> allInputs = new Dictionary<int, InputCommand>()
@@ -13,9 +14,9 @@ public class InputReader : ICommandSource
         {(int)CommandType.Fire, new InputCommand()},
     };
 
-    public InputReader(Camera sessionCamera)
+    public InputReader(Func<Vector3, Vector3> convertScreenToWorld)
     {
-        this.sessionCamera = sessionCamera;
+        this.screenToWorld = convertScreenToWorld;
     }
 
     public void ReadFrameInputs()
@@ -26,7 +27,7 @@ public class InputReader : ICommandSource
         {
             commandsThisFrame ^= CommandType.Fire;
             var mousePos = Input.mousePosition;
-            var point = sessionCamera.ScreenToWorldPoint(mousePos);
+            var point = screenToWorld(mousePos);
             var fireCommand = new InputCommand()
             {
                 Coords = point

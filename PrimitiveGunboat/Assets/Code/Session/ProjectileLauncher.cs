@@ -5,7 +5,6 @@ public class ProjectileLauncher : MonoBehaviour
 {
     private IAssetDispenser assetDispenser;
     private Transform launchPoint;
-    private Vector3 launchPosition;
 
     private Queue<InputCommand> firingQueue;
     private float launcherCooldown;
@@ -13,8 +12,6 @@ public class ProjectileLauncher : MonoBehaviour
     public void Initialize(IAssetDispenser assetDispenser)
     {
         launchPoint = GetComponent<Transform>();
-        var pos = launchPoint.position;
-        launchPosition = new Vector3(pos.x, 0, pos.z);
 
         firingQueue = new Queue<InputCommand>(Settings.FiringQueueLimit);
 
@@ -51,7 +48,7 @@ public class ProjectileLauncher : MonoBehaviour
         var torpedo = assetDispenser.TakeProjectile();
 
         torpedo.Died += OnTorpedoDie;
-        torpedo.Launch(launchPosition, cmd.Coords);
+        torpedo.Launch(launchPoint.position, cmd.Coords);
 
         launcherCooldown = Settings.LauncherCooldown;
     }

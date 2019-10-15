@@ -1,21 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
-public class Torpedo : MonoBehaviour
+public class Torpedo : MovingObject
 {
-    public event Action<Torpedo> Died;
-    private Transform selfTransform;
-    private Vector3 movementDirection;
+    public event Action<Torpedo> Died;  
     private float lifetime;
 
     public bool IsAlive { get {return lifetime <= Settings.TorpedoLifetime; } }
 
-    void Awake()
-    {
-        selfTransform = GetComponent<Transform>();
-    }
-
-    void Update()
+    protected override void Update()
     {
         if (!IsAlive)
         {
@@ -23,15 +16,13 @@ public class Torpedo : MonoBehaviour
             Died?.Invoke(this);
         }
         lifetime += Time.deltaTime;
-        selfTransform.position = selfTransform.position + movementDirection * Settings.TorpedoSpeed * Time.deltaTime;
+        base.Update();
     }
 
-    internal void Launch(Vector3 from, Vector3 to)
+    internal override void Launch(Vector3 from, Vector3 to)
     {
-        selfTransform.position = from;
-        var distance = to - from;
-        movementDirection = new Vector3(distance.x, 0, distance.z).normalized;
-
+        speed = Settings.TorpedoSpeed;
+        base.Launch(from, to);
         selfTransform.rotation = Quaternion.LookRotation(movementDirection, Vector3.up);
 
         gameObject.SetActive(true);

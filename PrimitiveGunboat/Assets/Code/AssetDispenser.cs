@@ -7,6 +7,8 @@ public interface IAssetDispenser
     SpaceStationController GetSpaceStation();
     Torpedo TakeProjectile();
     void PutProjectile(Torpedo torpedo);
+    Enemy TakeEnemy(string gruipId);
+    void PutEnemy(Enemy enemy);
 }
 
 
@@ -20,13 +22,17 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
     private const string TORPEDO_POOL = "torpedoes";
 
     [SerializeField]
-    private List<GameObject> enemies;
+    private List<Enemy> enemies;
 
     private AssetPool pools;
     private void Awake()
     {
         pools = new AssetPool();
         pools.CreatePool(TORPEDO_POOL, torpedo.gameObject);
+        foreach (var enemy in enemies)
+        {
+            pools.CreatePool(enemy.GroupId, enemy.gameObject);
+        }
     }
 
     public SpaceStationController GetSpaceStation()
@@ -43,5 +49,15 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
     {
         torpedo.Defuse();
         pools.PutTo(TORPEDO_POOL, torpedo.gameObject);
+    }
+
+    public Enemy TakeEnemy(string groupId)
+    {
+        return pools.TakeFrom(groupId).GetComponent<Enemy>();
+    }
+
+    public void PutEnemy(Enemy enemy)
+    {
+        pools.PutTo(enemy.GroupId, enemy.gameObject);
     }
 }

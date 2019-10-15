@@ -4,7 +4,6 @@ public class SessionController : MonoBehaviour
 {
     [SerializeField]
     private Camera sessionCam;
-    [SerializeField]
     private EnemySpawner enemySpawner;
     private InputReader inputReader;
     private IAssetDispenser assetDispenser;
@@ -17,7 +16,7 @@ public class SessionController : MonoBehaviour
     {
         CheckEndGame();
         inputReader.ReadFrameInputs();
-        // spawner checks for additional enemy spawns
+        enemySpawner.TrySpawnMoreEnemies();
     }
 
     internal void Initialize(IAssetDispenser assetDispenser)
@@ -29,7 +28,7 @@ public class SessionController : MonoBehaviour
     {
         if (inputReader == null)
         {
-            inputReader = new InputReader(sessionCam);   
+            inputReader = new InputReader(sessionCam.ScreenToWorldPoint);   
         }
 
         if (!sessionSpaceTransfrom)
@@ -43,11 +42,11 @@ public class SessionController : MonoBehaviour
             Quaternion.identity, sessionSpaceTransfrom);
         station.Initialize(assetDispenser, inputReader);
         
-        // measure screen size to sesison settings
-        // init spawner
-        enemySpawner.Initialize(assetDispenser);
-        // prespawn enemies
-
+        if (enemySpawner == null)
+        {
+            enemySpawner = new EnemySpawner(assetDispenser, sessionCam.ScreenToWorldPoint);
+        }
+        enemySpawner.Prespawn();
     }
 
     private void CheckEndGame()

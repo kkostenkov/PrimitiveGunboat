@@ -15,6 +15,12 @@ public class AssetPool
         
     public void CreatePool(string poolName, GameObject prefab)
     {
+        if (poolPrefabs.ContainsKey(poolName))
+        {
+            Debug.LogError($"Duplicate pool creation request. Pool name: {poolName}");
+            return;
+        }
+
         poolPrefabs[poolName] = prefab;
 
         var poolTransform = new GameObject(poolName).transform;
@@ -34,7 +40,7 @@ public class AssetPool
         {
             return null;
         }
-        
+
         var pool = poolContents[poolName];
         if (pool.Count < 1)
         {

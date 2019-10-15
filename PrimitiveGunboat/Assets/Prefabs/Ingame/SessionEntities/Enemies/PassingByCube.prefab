@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8461609843704459996}
+  - component: {fileID: 1240483318662797616}
   m_Layer: 0
   m_Name: PassingByCube
   m_TagString: Untagged
@@ -31,6 +32,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1240483318662797616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747592303176036104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345c3ff5f27b7824c9f1123cdfe26977, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GroupId: PassingByCube
+  Speed: 4
 --- !u!1 &3783146610745766331
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,6 +57,7 @@ GameObject:
   - component: {fileID: 8261368097800011545}
   - component: {fileID: 1969440115499549985}
   - component: {fileID: 8796548927612752648}
+  - component: {fileID: 1143100958628673857}
   m_Layer: 0
   m_Name: PassingByCubeVisual
   m_TagString: Untagged
@@ -108,3 +124,22 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!95 &1143100958628673857
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3783146610745766331}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8986072f77596dc44ba999fc1d60df38, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
