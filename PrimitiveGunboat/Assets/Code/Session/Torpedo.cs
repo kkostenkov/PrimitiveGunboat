@@ -17,13 +17,17 @@ public class Torpedo : MonoBehaviour
     void Update()
     {
         lifetime += Time.deltaTime;
-        selfTransform.Translate(movementDirection * Settings.TorpedoSpeed * Time.deltaTime);
+        selfTransform.position = selfTransform.position + movementDirection * Settings.TorpedoSpeed * Time.deltaTime;
     }
 
     internal void Launch(Vector3 from, Vector3 to)
     {
         selfTransform.position = from;
-        movementDirection = (to - selfTransform.position).normalized;
+        var distance = to - from;
+        movementDirection = new Vector3(distance.x, 0, distance.z).normalized;
+
+        selfTransform.rotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+
         gameObject.SetActive(true);
     }
 

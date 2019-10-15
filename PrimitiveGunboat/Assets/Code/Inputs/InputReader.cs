@@ -5,7 +5,6 @@ using UnityEngine;
 public class InputReader : ICommandSource
 {
     private Camera sessionCamera;
-    private float sessionPlaneHeight;
     private CommandType commandsThisFrame;
 
     private Dictionary<int, InputCommand> allInputs = new Dictionary<int, InputCommand>()
@@ -14,10 +13,9 @@ public class InputReader : ICommandSource
         {(int)CommandType.Fire, new InputCommand()},
     };
 
-    public InputReader(Camera sessionCamera, float heightCoord)
+    public InputReader(Camera sessionCamera)
     {
         this.sessionCamera = sessionCamera;
-        sessionPlaneHeight = heightCoord;
     }
 
     public void ReadFrameInputs()
@@ -28,8 +26,7 @@ public class InputReader : ICommandSource
         {
             commandsThisFrame ^= CommandType.Fire;
             var mousePos = Input.mousePosition;
-            var point = sessionCamera.ScreenToWorldPoint(
-                new Vector3(mousePos.x, mousePos.y, sessionPlaneHeight));
+            var point = sessionCamera.ScreenToWorldPoint(mousePos);
             allInputs[(int)CommandType.Fire].Coords = point;
         }
     }

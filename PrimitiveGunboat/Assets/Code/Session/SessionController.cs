@@ -13,13 +13,6 @@ public class SessionController : MonoBehaviour
 
     private SpaceStationController station;
     
-    void Start()
-    {
-        var gamePlaneCoordY = 0;
-        inputReader = new InputReader(sessionCam, gamePlaneCoordY);   
-        sessionSpaceTransfrom = GetComponent<Transform>();
-    }
-    
     void Update()
     {
         CheckEndGame();
@@ -34,6 +27,16 @@ public class SessionController : MonoBehaviour
 
     internal void RunSession()
     {
+        if (inputReader == null)
+        {
+            inputReader = new InputReader(sessionCam);   
+        }
+
+        if (!sessionSpaceTransfrom)
+        {
+            sessionSpaceTransfrom = GetComponent<Transform>();
+        }
+
         // spawn station
         var stationPrefab = assetDispenser.GetSpaceStation();
         var station = GameObject.Instantiate(stationPrefab, Vector3.zero, 
