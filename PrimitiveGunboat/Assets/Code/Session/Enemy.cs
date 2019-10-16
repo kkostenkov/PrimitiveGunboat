@@ -13,7 +13,11 @@ public class Enemy : MovingObject, IDamageTaker
     [SerializeField]
     private int MaxHp;
 
-    public event Action<IDamageTaker> Died;
+    [SerializeField]
+    private int Damage;
+
+    public event Action<IDamageTaker> Killed;
+    public event Action<MovingObject> Crashed;
 
     private int currentHp;
 
@@ -28,7 +32,8 @@ public class Enemy : MovingObject, IDamageTaker
 
     internal override void Release()
     {
-        Died = null;
+        Killed = null;
+        Crashed = null;
         base.Release();
     }
 
@@ -37,8 +42,33 @@ public class Enemy : MovingObject, IDamageTaker
         currentHp -= amount;
         if (currentHp <= 0)
         {
-            Died?.Invoke(this);
+            Killed?.Invoke(this);
         }
+    }
+
+    public int collisionLayersMask = Constants.SPACE_STATION_LAYER;
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!CheckCollisionTrigger(other.gameObject.layer))
+        {
+            return;       
+        }
+        var damageTaker = other.GetComponent<IDamageTaker>();
+
+        if (damageTaker == null)
+        {
+            return;
+        }
+
+        damageTaker.TakeDamage(Damage);
+
+        Crashed?.Invoke(this);
+    }
+
+    private bool CheckCollisionTrigger(int otherLayer)
+    {
+        return (collisionLayersMask & otherLayer) == otherLayer;
     }
 }
 

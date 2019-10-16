@@ -47,8 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groupId: PassingByCube
-  Speed: 4
+  Speed: 20
   MaxHp: 1
+  Damage: 1
+  collisionLayersMask: 10
 --- !u!135 &2850294003946045646
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -35,7 +35,7 @@ public class Torpedo : MovingObject
             return;
         }
 
-        damageTaker.TakeDamage(1);
+        damageTaker.TakeDamage(Constants.TORPEDO_DAMAGE);
 
         Exploded?.Invoke(this);
     }

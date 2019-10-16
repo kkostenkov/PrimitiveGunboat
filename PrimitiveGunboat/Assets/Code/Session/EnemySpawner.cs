@@ -34,7 +34,8 @@ public class EnemySpawner
         var enemy = assetDispenser.TakeEnemy(enemyGroupId);
         enemy.SetBounds(boundsChecker);
         enemy.BoundsBroken += OnEnemyOutOfScreen;
-        enemy.Died += OnEnemyDie;
+        enemy.Crashed += OnEnemyOutOfScreen;
+        enemy.Killed += OnEnemyDie;
         var trajectory = boundsChecker.GetTrajectory();
         enemy.Launch(trajectory.From, trajectory.To);
     }
@@ -43,6 +44,8 @@ public class EnemySpawner
     {
         var enemy = movingObject as Enemy;
         enemy.BoundsBroken -= OnEnemyOutOfScreen;
+        enemy.Crashed -= OnEnemyOutOfScreen;
+        enemy.Killed -= OnEnemyDie;
         var enemyGroup = enemy.GroupId;
 
         Spawn(enemyGroup);

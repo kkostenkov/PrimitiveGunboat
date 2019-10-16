@@ -15,7 +15,6 @@ public class SessionController : MonoBehaviour
     
     void Update()
     {
-        CheckEndGame();
         inputReader.ReadFrameInputs();
         enemySpawner.TrySpawnMoreEnemies();
     }
@@ -43,10 +42,16 @@ public class SessionController : MonoBehaviour
         }
 
         // spawn station
-        var stationPrefab = assetDispenser.GetSpaceStation();
-        var station = GameObject.Instantiate(stationPrefab, Vector3.zero, 
-            Quaternion.identity, sessionSpaceTransfrom);
-        station.Initialize(assetDispenser, inputReader, boundsChecker);
+        if (!station)
+        {
+            var stationPrefab = assetDispenser.GetSpaceStation();
+            station = GameObject.Instantiate(stationPrefab, Vector3.zero, 
+                Quaternion.identity, sessionSpaceTransfrom);
+            station.Killed += OnStationKilled;
+            station.Initialize(assetDispenser, inputReader, boundsChecker);
+        }
+        station.Reset();
+        
 
         if (enemySpawner == null)
         {
@@ -55,8 +60,8 @@ public class SessionController : MonoBehaviour
         enemySpawner.Prespawn();
     }
 
-    private void CheckEndGame()
+    private void OnStationKilled(IDamageTaker station)
     {
-
+        Debug.Log("gameover");
     }
 }

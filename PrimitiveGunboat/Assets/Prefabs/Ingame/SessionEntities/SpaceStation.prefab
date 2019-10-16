@@ -293,7 +293,7 @@ Transform:
   m_GameObject: {fileID: 5174665399781742283}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children:
   - {fileID: 5993083849794964508}
   m_Father: {fileID: 0}
@@ -312,6 +312,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gun: {fileID: 2653967433322597621}
+  MaxHp: 3
 --- !u!114 &2653967433322597621
 MonoBehaviour:
   m_ObjectHideFlags: 0
