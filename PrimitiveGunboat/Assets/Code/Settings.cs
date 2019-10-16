@@ -3,21 +3,22 @@
 public static class Settings
 {
     internal static float TorpedoSpeed = 10f;
-    internal static float TorpedoLifetime = 5f; // seconds
     internal static int FiringQueueLimit = 100;
-    internal static float LauncherCooldown = 1f; // seconds
+    internal static float LauncherCooldown = 0.5f; // seconds
+    internal static float EnemyWaveSpawnCooldown = 0.5f; // seconds
+    internal static float ChanceOfPreciseEnemy = 5; // percent
 
-    internal static List<GroupSpawnPreset> SpawnSettings = new List<GroupSpawnPreset>()
+    internal static List<GroupSpawnSettings> SpawnSettings = new List<GroupSpawnSettings>()
     {
-        new GroupSpawnPreset() {
+        new GroupSpawnSettings() {
             GroupId = "PassingByCube",
-            MaxCopiesCount = 10,
+            StartCopiesCount = 10,
         }
     };
 }
 
-public struct GroupSpawnPreset
+public struct GroupSpawnSettings
 {
     public string GroupId;
-    public int MaxCopiesCount;
+    public int StartCopiesCount;
 }

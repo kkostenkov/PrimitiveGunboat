@@ -20,7 +20,7 @@ public class Torpedo : MovingObject
         base.Release();
     }
 
-    public int collisionLayersMask = Constants.ENEMY_LAYER;
+    private int collisionLayersMask = Constants.ENEMY_LAYER;
 
     private void OnTriggerStay(Collider other)
     {

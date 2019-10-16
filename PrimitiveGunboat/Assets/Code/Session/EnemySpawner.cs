@@ -1,32 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner
 {
     private readonly IAssetDispenser assetDispenser;
     private readonly ScreenBounds boundsChecker;
+
+    private Dictionary<string, int> spawnedCount = new Dictionary<string, int>();
+    private Dictionary<string, int> spawnCapCount = new Dictionary<string, int>();
+
+    private DateTime nextSpawnWaveTime;
     
 
     public EnemySpawner(IAssetDispenser assetDispenser, ScreenBounds bounds)
     {
         this.assetDispenser = assetDispenser;
         this.boundsChecker = bounds;
-    }
 
-    internal void Prespawn()
-    {
         foreach (var preset in Settings.SpawnSettings)
         {
-            for (int i = 0; i < preset.MaxCopiesCount; i++)
+            spawnedCount[preset.GroupId] = 0;
+            spawnCapCount[preset.GroupId] = preset.StartCopiesCount;
+        }
+    }
+
+    internal void SpawnWave()
+    {
+        foreach (var kvp in spawnCapCount)
+        {
+            var groupId = kvp.Key;
+            var cap = kvp.Value;
+            while (spawnedCount[groupId] < cap)
             {
-                Spawn(preset.GroupId);
+                Spawn(groupId);
             }
         }
     }
 
     internal void TrySpawnMoreEnemies()
     {
-        
+        if (DateTime.UtcNow < nextSpawnWaveTime)
+        {
+            return;
+        }
+        SpawnWave();
     }
 
     private void Spawn(string enemyGroupId)
@@ -37,6 +55,8 @@ public class EnemySpawner
         enemy.Crashed += OnEnemyOutOfScreen;
         enemy.Killed += OnEnemyDie;
         var trajectory = boundsChecker.GetTrajectory();
+        spawnedCount[enemyGroupId] += 1;
+        nextSpawnWaveTime = DateTime.UtcNow.AddSeconds(Settings.EnemyWaveSpawnCooldown);
         enemy.Launch(trajectory.From, trajectory.To);
     }
 
@@ -47,6 +67,7 @@ public class EnemySpawner
         enemy.Crashed -= OnEnemyOutOfScreen;
         enemy.Killed -= OnEnemyDie;
         var enemyGroup = enemy.GroupId;
+        spawnedCount[enemy.GroupId] -= 1;
 
         Spawn(enemyGroup);
 
@@ -56,6 +77,7 @@ public class EnemySpawner
     private void OnEnemyDie(IDamageTaker damageTaker)
     {
         var enemy = damageTaker as Enemy;
+        spawnedCount[enemy.GroupId] -= 1;
         Debug.Log("enemy count dead");
         assetDispenser.PutEnemy(enemy);
     }

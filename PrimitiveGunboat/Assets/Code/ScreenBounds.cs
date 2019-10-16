@@ -12,14 +12,18 @@ public class ScreenBounds : IScreenBoundsSchecker
 
     private System.Random rand = new System.Random();
     private readonly Func<Vector3, Vector3> screenToWorld;
+    private Vector3 screenCenter, minWorldOffsetCoords, maxWorldOffsetCoords;
 
     public ScreenBounds(Func<Vector3, Vector3> convertScreenToWorld)
     {
         this.screenToWorld = convertScreenToWorld;
         CacheOffsetCoords();
+        screenCenter = screenToWorld(new Vector3(
+            Screen.width / 2, 
+            Screen.height / 2, 
+            0));
     }
 
-    private Vector3 minWorldOffsetCoords, maxWorldOffsetCoords;
     private void CacheOffsetCoords()
     {
         var minScreenOffsetCoords = new Vector3
@@ -56,7 +60,10 @@ public class ScreenBounds : IScreenBoundsSchecker
             otherSide = sidesMaxIndex;
         }
         var from = GetSpawnPointAt((ScreenSide)side);
-        var to = GetSpawnPointAt((ScreenSide)otherSide);
+        var isPrecise = rand.Next(100) < Settings.ChanceOfPreciseEnemy;
+        var to = isPrecise 
+            ? screenCenter
+            : GetSpawnPointAt((ScreenSide)otherSide);
         return new Trajectory(from, to);
     }
 

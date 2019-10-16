@@ -57,7 +57,7 @@ public class SessionController : MonoBehaviour
         {
             enemySpawner = new EnemySpawner(assetDispenser, boundsChecker);
         }
-        enemySpawner.Prespawn();
+        enemySpawner.SpawnWave();
     }
 
     private void OnStationKilled(IDamageTaker station)

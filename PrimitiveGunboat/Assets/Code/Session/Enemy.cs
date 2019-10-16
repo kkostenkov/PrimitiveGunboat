@@ -46,7 +46,7 @@ public class Enemy : MovingObject, IDamageTaker
         }
     }
 
-    public int collisionLayersMask = Constants.SPACE_STATION_LAYER;
+    private int collisionLayersMask = Constants.SPACE_STATION_LAYER;
 
     private void OnTriggerStay(Collider other)
     {
