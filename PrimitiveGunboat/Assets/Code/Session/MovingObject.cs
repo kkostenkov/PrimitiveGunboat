@@ -31,6 +31,7 @@ public class MovingObject : MonoBehaviour
     internal virtual void Release()
     {
         BoundsBroken = null;
+        gameObject.SetActive(false);
     }
 
     protected virtual void Update()

@@ -42,6 +42,10 @@ public class EnemySpawner
     {
         var enemy = movingObject as Enemy;
         enemy.BoundsBroken -= OnEnemyDie;
+        var enemyGroup = enemy.GroupId;
+
+        Spawn(enemyGroup);
+
         assetDispenser.PutEnemy(enemy);
     }
 }
