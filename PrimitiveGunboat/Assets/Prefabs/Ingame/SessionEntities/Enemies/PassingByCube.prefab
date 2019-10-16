@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 747592303176036104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 3171734699205294210}
   m_Father: {fileID: 0}
@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345c3ff5f27b7824c9f1123cdfe26977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GroupId: PassingByCube
+  groupId: PassingByCube
   Speed: 4
+  MaxHp: 1
 --- !u!135 &2850294003946045646
 SphereCollider:
   m_ObjectHideFlags: 0

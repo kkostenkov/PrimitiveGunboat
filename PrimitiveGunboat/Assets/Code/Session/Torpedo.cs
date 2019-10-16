@@ -3,21 +3,7 @@ using UnityEngine;
 
 public class Torpedo : MovingObject
 {
-    public event Action<Torpedo> Died;  
-    private float lifetime;
-
-    public bool IsAlive { get {return lifetime <= Settings.TorpedoLifetime; } }
-
-    protected override void Update()
-    {
-        if (!IsAlive)
-        {
-            gameObject.SetActive(false);
-            Died?.Invoke(this);
-        }
-        lifetime += Time.deltaTime;
-        base.Update();
-    }
+    public event Action<Torpedo> Exploded;  
 
     internal override void Launch(Vector3 from, Vector3 to)
     {
@@ -30,8 +16,32 @@ public class Torpedo : MovingObject
 
     internal override void Release()
     {
-        Died = null;
-        lifetime = 0;
+        Exploded = null;
         base.Release();
+    }
+
+    public int collisionLayersMask = Constants.ENEMY_LAYER;
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!CheckCollisionTrigger(other.gameObject.layer))
+        {
+            return;       
+        }
+        var damageTaker = other.GetComponent<IDamageTaker>();
+
+        if (damageTaker == null)
+        {
+            return;
+        }
+
+        damageTaker.TakeDamage(1);
+
+        Exploded?.Invoke(this);
+    }
+
+    private bool CheckCollisionTrigger(int otherLayer)
+    {
+        return (collisionLayersMask & otherLayer) == otherLayer;
     }
 }

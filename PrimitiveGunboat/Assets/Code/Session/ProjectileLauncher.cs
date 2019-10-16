@@ -50,7 +50,7 @@ public class ProjectileLauncher : MonoBehaviour
         var torpedo = assetDispenser.TakeProjectile();
         torpedo.SetBounds(boundsChecker);
         torpedo.BoundsBroken += OnTorpedoDie;
-        torpedo.Died += OnTorpedoDie;
+        torpedo.Exploded += OnTorpedoDie;
         torpedo.Launch(launchPoint.position, cmd.Coords);
 
         launcherCooldown = Settings.LauncherCooldown;
@@ -60,7 +60,7 @@ public class ProjectileLauncher : MonoBehaviour
     {
         var torpedo = movingObject as Torpedo;
         torpedo.BoundsBroken -= OnTorpedoDie;
-        torpedo.Died -= OnTorpedoDie;
+        torpedo.Exploded -= OnTorpedoDie;
         assetDispenser.PutProjectile(torpedo);
     }
 }
