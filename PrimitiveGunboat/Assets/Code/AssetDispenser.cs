@@ -47,17 +47,19 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
 
     public void PutProjectile(Torpedo torpedo)
     {
-        torpedo.Defuse();
+        torpedo.Release();
         pools.PutTo(TORPEDO_POOL, torpedo.gameObject);
     }
 
     public Enemy TakeEnemy(string groupId)
     {
-        return pools.TakeFrom(groupId).GetComponent<Enemy>();
+        var go = pools.TakeFrom(groupId);
+        return go.GetComponent<Enemy>();
     }
 
     public void PutEnemy(Enemy enemy)
     {
+        enemy.Release();
         pools.PutTo(enemy.GroupId, enemy.gameObject);
     }
 }

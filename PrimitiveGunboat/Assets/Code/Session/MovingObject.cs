@@ -1,14 +1,22 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class MovingObject : MonoBehaviour
 {
     protected Transform selfTransform;
     protected Vector3 movementDirection;
     protected float speed;
+    public event Action<MovingObject> BoundsBroken;
+    protected IScreenBoundsSchecker boundsChecker;
     
     void Awake()
     {
         selfTransform = GetComponent<Transform>();
+    }
+
+    public void SetBounds(IScreenBoundsSchecker boundsChecker)
+    {
+        this.boundsChecker = boundsChecker;
     }
 
     internal virtual void Launch(Vector3 from, Vector3 to)
@@ -20,8 +28,30 @@ public class MovingObject : MonoBehaviour
         movementDirection = new Vector3(distance.x, 0, distance.z).normalized;
     }
 
+    internal virtual void Release()
+    {
+        BoundsBroken = null;
+    }
+
     protected virtual void Update()
     {
         selfTransform.position = selfTransform.position + movementDirection * speed * Time.deltaTime;
+        if (BoundsBroken == null)
+        {
+            return;
+        }
+
+        var isInBounds = boundsChecker.ValidateBounds(selfTransform.position);
+        if (!isInBounds)
+        {
+            BoundsBroken?.Invoke(this);
+            BoundsBroken = null;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        BoundsBroken = null;
+        boundsChecker = null;
     }
 }

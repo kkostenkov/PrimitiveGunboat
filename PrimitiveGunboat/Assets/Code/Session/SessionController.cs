@@ -5,6 +5,7 @@ public class SessionController : MonoBehaviour
     [SerializeField]
     private Camera sessionCam;
     private EnemySpawner enemySpawner;
+    private ScreenBounds boundsChecker;
     private InputReader inputReader;
     private IAssetDispenser assetDispenser;
 
@@ -31,6 +32,11 @@ public class SessionController : MonoBehaviour
             inputReader = new InputReader(sessionCam.ScreenToWorldPoint);   
         }
 
+        if (boundsChecker == null)
+        {
+            boundsChecker = new ScreenBounds(sessionCam.ScreenToWorldPoint);
+        }
+
         if (!sessionSpaceTransfrom)
         {
             sessionSpaceTransfrom = GetComponent<Transform>();
@@ -40,11 +46,11 @@ public class SessionController : MonoBehaviour
         var stationPrefab = assetDispenser.GetSpaceStation();
         var station = GameObject.Instantiate(stationPrefab, Vector3.zero, 
             Quaternion.identity, sessionSpaceTransfrom);
-        station.Initialize(assetDispenser, inputReader);
-        
+        station.Initialize(assetDispenser, inputReader, boundsChecker);
+
         if (enemySpawner == null)
         {
-            enemySpawner = new EnemySpawner(assetDispenser, sessionCam.ScreenToWorldPoint);
+            enemySpawner = new EnemySpawner(assetDispenser, boundsChecker);
         }
         enemySpawner.Prespawn();
     }

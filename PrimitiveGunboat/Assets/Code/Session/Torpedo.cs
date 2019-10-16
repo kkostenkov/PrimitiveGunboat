@@ -28,10 +28,11 @@ public class Torpedo : MovingObject
         gameObject.SetActive(true);
     }
 
-    internal void Defuse()
+    internal override void Release()
     {
         Died = null;
         gameObject.SetActive(false);
         lifetime = 0;
+        base.Release();
     }
 }

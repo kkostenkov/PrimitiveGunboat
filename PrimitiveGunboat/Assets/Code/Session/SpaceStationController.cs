@@ -7,10 +7,11 @@ public class SpaceStationController : MonoBehaviour
     private ICommandSource commandSource;
     
 
-    internal void Initialize(IAssetDispenser assetDispenser, ICommandSource commandSource)
+    internal void Initialize(IAssetDispenser assetDispenser, ICommandSource commandSource,
+        IScreenBoundsSchecker bounds)
     {
         this.commandSource = commandSource;
-        gun.Initialize(assetDispenser);
+        gun.Initialize(assetDispenser, bounds);
     }
 
     private void Update()
