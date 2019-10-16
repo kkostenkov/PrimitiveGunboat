@@ -13,6 +13,10 @@ public static class Settings
         new GroupSpawnSettings() {
             GroupId = "PassingByCube",
             StartCopiesCount = 10,
+        },
+        new GroupSpawnSettings() {
+            GroupId = "Ufo",
+            StartCopiesCount = 1,
         }
     };
 }

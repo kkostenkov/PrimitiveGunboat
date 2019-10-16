@@ -36,7 +36,7 @@ public class SpaceStationController : MonoBehaviour, IDamageTaker
     public void TakeDamage(int amount)
     {
         currentHp -= amount;
-        if (currentHp <= 0)
+        if (currentHp < 0) //By design. "Player loses when HP is below 0" 
         {
             Killed?.Invoke(this);
         }

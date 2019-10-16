@@ -48,6 +48,7 @@ MonoBehaviour:
   torpedo: {fileID: 3424438110003882503, guid: ab1e029855319994fae4d0f68c889c8d, type: 3}
   enemies:
   - {fileID: 1240483318662797616, guid: 6c02c44c37e74dc48a79b5b69a17f374, type: 3}
+  - {fileID: 1240483318662797616, guid: 6d5bc787e2c15ef47bdceae71f0120fe, type: 3}
 --- !u!1 &148117669274091673
 GameObject:
   m_ObjectHideFlags: 0
