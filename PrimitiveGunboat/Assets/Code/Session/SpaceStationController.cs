@@ -19,7 +19,7 @@ public class SpaceStationController : MonoBehaviour, IDamageTaker
     {
         this.commandSource = commandSource;
         this.eventListener = eventListener;
-        gun.Initialize(assetDispenser, bounds);        
+        gun.Initialize(assetDispenser, bounds, eventListener);        
     }
 
     internal void Reset()

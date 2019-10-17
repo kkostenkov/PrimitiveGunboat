@@ -5,12 +5,14 @@ public class ProjectileLauncher : MonoBehaviour
 {
     private IAssetDispenser assetDispenser;
     private IScreenBoundsSchecker boundsChecker;
+    private ISessionEventsListener eventListener;
     private Transform launchPoint;
 
     private Queue<InputCommand> firingQueue;
     private float launcherCooldown;
 
-    public void Initialize(IAssetDispenser assetDispenser, IScreenBoundsSchecker bounds)
+    public void Initialize(IAssetDispenser assetDispenser, IScreenBoundsSchecker bounds,
+        ISessionEventsListener eventListener)
     {
         launchPoint = GetComponent<Transform>();
 
@@ -18,6 +20,7 @@ public class ProjectileLauncher : MonoBehaviour
 
         this.assetDispenser = assetDispenser;
         boundsChecker = bounds;
+        this.eventListener = eventListener;
     }
 
     public bool IssueFireCommand(InputCommand cmd)
@@ -54,6 +57,7 @@ public class ProjectileLauncher : MonoBehaviour
         torpedo.Launch(launchPoint.position, cmd.Coords);
 
         launcherCooldown = Settings.LauncherCooldown;
+        eventListener.ProjectileLaunch();
     }
 
     private void OnTorpedoDie(MovingObject movingObject)
