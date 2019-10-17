@@ -127,6 +127,7 @@ MonoBehaviour:
   Speed: 15
   MaxHp: 1
   Damage: 1
+  pointsValue: 5050
 --- !u!135 &2850294003946045646
 SphereCollider:
   m_ObjectHideFlags: 0

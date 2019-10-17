@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class SessionController : MonoBehaviour
+public class SessionController : MonoBehaviour, ISessionPlayer
 {
     [SerializeField]
     private Camera sessionCam;
@@ -8,13 +9,26 @@ public class SessionController : MonoBehaviour
     private ScreenBounds boundsChecker;
     private InputReader inputReader;
     private IAssetDispenser assetDispenser;
-
     private Transform sessionSpaceTransfrom;
-
     private SpaceStationController station;
-    
+
+    private SessionEvents sessionEvents = new SessionEvents();
+    public ISessionEventsProvider SessionEventsProvider => sessionEvents;
+
+    public int TopScore => 0;
+
+    public int CurrentHealth => station.CurrentHp;
+
+    private bool isSessionActive = false;
+
+    public event Action GameOver;
+
     void Update()
     {
+        if (!isSessionActive)
+        {
+            return;
+        }
         inputReader.ReadFrameInputs();
         enemySpawner.TrySpawnMoreEnemies();
     }
@@ -22,10 +36,6 @@ public class SessionController : MonoBehaviour
     internal void Initialize(IAssetDispenser assetDispenser)
     {
         this.assetDispenser = assetDispenser;
-    }
-
-    internal void RunSession()
-    {
         if (inputReader == null)
         {
             inputReader = new InputReader(sessionCam.ScreenToWorldPoint);   
@@ -41,27 +51,34 @@ public class SessionController : MonoBehaviour
             sessionSpaceTransfrom = GetComponent<Transform>();
         }
 
-        // spawn station
         if (!station)
         {
             var stationPrefab = assetDispenser.GetSpaceStation();
             station = GameObject.Instantiate(stationPrefab, Vector3.zero, 
                 Quaternion.identity, sessionSpaceTransfrom);
             station.Killed += OnStationKilled;
-            station.Initialize(assetDispenser, inputReader, boundsChecker);
+            station.Initialize(assetDispenser, inputReader, boundsChecker, sessionEvents);
         }
-        station.Reset();
-        
 
         if (enemySpawner == null)
         {
-            enemySpawner = new EnemySpawner(assetDispenser, boundsChecker);
+            enemySpawner = new EnemySpawner(assetDispenser, boundsChecker, sessionEvents);
         }
+    }
+
+    public void Play()
+    {
+        station.Reset();
+        isSessionActive = true;
+        enemySpawner.Reset();
         enemySpawner.SpawnWave();
     }
 
     private void OnStationKilled(IDamageTaker station)
     {
+        isSessionActive = false;
         Debug.Log("gameover");
+        enemySpawner.Reset();
+        GameOver?.Invoke();
     }
 }

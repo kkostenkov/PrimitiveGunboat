@@ -15,6 +15,9 @@ public class Enemy : MovingObject, IDamageTaker
 
     [SerializeField]
     private int Damage;
+    [SerializeField]
+    private int pointsValue;
+    public int PointsValue { get {return pointsValue;} }
 
     public event Action<IDamageTaker> Killed;
     public event Action<MovingObject> Crashed;

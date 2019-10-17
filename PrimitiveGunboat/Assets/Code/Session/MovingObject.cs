@@ -46,7 +46,6 @@ public class MovingObject : MonoBehaviour
         if (!isInBounds)
         {
             BoundsBroken?.Invoke(this);
-            BoundsBroken = null;
         }
     }
 

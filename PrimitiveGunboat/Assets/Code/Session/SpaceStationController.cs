@@ -7,15 +7,18 @@ public class SpaceStationController : MonoBehaviour, IDamageTaker
     private ProjectileLauncher gun;
     [SerializeField]
     private int MaxHp;
+    public int CurrentHp { get { return currentHp; } }
     private int currentHp;
     private ICommandSource commandSource;
+    private ISessionEventsListener eventListener;
 
     public event Action<IDamageTaker> Killed;
 
     internal void Initialize(IAssetDispenser assetDispenser, ICommandSource commandSource,
-        IScreenBoundsSchecker bounds)
+        IScreenBoundsSchecker bounds, ISessionEventsListener eventListener)
     {
         this.commandSource = commandSource;
+        this.eventListener = eventListener;
         gun.Initialize(assetDispenser, bounds);        
     }
 
@@ -36,6 +39,7 @@ public class SpaceStationController : MonoBehaviour, IDamageTaker
     public void TakeDamage(int amount)
     {
         currentHp -= amount;
+        eventListener.HealthSet(currentHp);
         if (currentHp < 0) //By design. "Player loses when HP is below 0" 
         {
             Killed?.Invoke(this);

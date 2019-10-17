@@ -6,23 +6,47 @@ public class EnemySpawner
 {
     private readonly IAssetDispenser assetDispenser;
     private readonly ScreenBounds boundsChecker;
+    private readonly ISessionEventsListener eventListener;
 
-    private Dictionary<string, int> spawnedCount = new Dictionary<string, int>();
+    private Dictionary<string, HashSet<Enemy>> spawned = 
+        new Dictionary<string, HashSet<Enemy>>();
     private Dictionary<string, int> spawnCapCount = new Dictionary<string, int>();
 
     private DateTime nextSpawnWaveTime;
+    private int score = 0;
     
 
-    public EnemySpawner(IAssetDispenser assetDispenser, ScreenBounds bounds)
+    public EnemySpawner(IAssetDispenser assetDispenser, ScreenBounds bounds, 
+        ISessionEventsListener eventListener)
     {
         this.assetDispenser = assetDispenser;
         this.boundsChecker = bounds;
+        this.eventListener = eventListener;
 
         foreach (var preset in Settings.SpawnSettings)
         {
-            spawnedCount[preset.GroupId] = 0;
+            spawned[preset.GroupId] = new HashSet<Enemy>();
             spawnCapCount[preset.GroupId] = preset.StartCopiesCount;
         }
+    }
+
+    public void Reset()
+    {
+        var spawnedEnemies = new List<Enemy>();
+        foreach (var kvp in spawned)
+        {
+            spawnedEnemies.AddRange(kvp.Value);
+            kvp.Value.Clear();
+        }
+        for (int i = 0; i < spawnedEnemies.Count; i++)
+        {
+            var enemy = spawnedEnemies[i];
+            enemy.BoundsBroken -= OnEnemyOutOfScreen;
+            enemy.Crashed -= OnEnemyOutOfScreen;
+            enemy.Killed -= OnEnemyDie;
+            assetDispenser.PutEnemy(enemy);
+        }
+        score = 0;
     }
 
     internal void SpawnWave()
@@ -31,7 +55,7 @@ public class EnemySpawner
         {
             var groupId = kvp.Key;
             var cap = kvp.Value;
-            while (spawnedCount[groupId] < cap)
+            while (spawned[groupId].Count < cap)
             {
                 Spawn(groupId);
             }
@@ -55,7 +79,7 @@ public class EnemySpawner
         enemy.Crashed += OnEnemyOutOfScreen;
         enemy.Killed += OnEnemyDie;
         var trajectory = boundsChecker.GetTrajectory();
-        spawnedCount[enemyGroupId] += 1;
+        spawned[enemyGroupId].Add(enemy);
         nextSpawnWaveTime = DateTime.UtcNow.AddSeconds(Settings.EnemyWaveSpawnCooldown);
         enemy.Launch(trajectory.From, trajectory.To);
     }
@@ -67,18 +91,19 @@ public class EnemySpawner
         enemy.Crashed -= OnEnemyOutOfScreen;
         enemy.Killed -= OnEnemyDie;
         var enemyGroup = enemy.GroupId;
-        spawnedCount[enemy.GroupId] -= 1;
+        spawned[enemy.GroupId].Remove(enemy);
+        assetDispenser.PutEnemy(enemy);
 
         Spawn(enemyGroup);
-
-        assetDispenser.PutEnemy(enemy);
     }
 
     private void OnEnemyDie(IDamageTaker damageTaker)
     {
         var enemy = damageTaker as Enemy;
-        spawnedCount[enemy.GroupId] -= 1;
-        Debug.Log("enemy count dead");
+        score += enemy.PointsValue;
+        spawned[enemy.GroupId].Remove(enemy);
+        Debug.Log("enemy killed");
         assetDispenser.PutEnemy(enemy);
+        eventListener.ScoreSet(score);
     }
 }
