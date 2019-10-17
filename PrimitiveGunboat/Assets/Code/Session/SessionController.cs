@@ -15,7 +15,9 @@ public class SessionController : MonoBehaviour, ISessionPlayer
     private SessionEvents sessionEvents = new SessionEvents();
     public ISessionEventsProvider SessionEventsProvider => sessionEvents;
 
-    public int TopScore => 0;
+    public int LastScore => enemySpawner.LastScore;
+    public int CurrentScore => enemySpawner.Score;
+    public int TopScore => enemySpawner.TopScore;
 
     public int CurrentHealth => station.CurrentHp;
 

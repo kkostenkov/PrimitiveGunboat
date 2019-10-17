@@ -13,8 +13,10 @@ public class EnemySpawner
     private Dictionary<string, int> spawnCapCount = new Dictionary<string, int>();
 
     private DateTime nextSpawnWaveTime;
-    private int score = 0;
-    
+
+    public int LastScore {get; private set;}
+    public int Score { get; private set; }
+    public int TopScore { get; private set; }
 
     public EnemySpawner(IAssetDispenser assetDispenser, ScreenBounds bounds, 
         ISessionEventsListener eventListener)
@@ -46,7 +48,8 @@ public class EnemySpawner
             enemy.Killed -= OnEnemyDie;
             assetDispenser.PutEnemy(enemy);
         }
-        score = 0;
+        LastScore = Score;
+        Score = 0;
     }
 
     internal void SpawnWave()
@@ -100,10 +103,15 @@ public class EnemySpawner
     private void OnEnemyDie(IDamageTaker damageTaker)
     {
         var enemy = damageTaker as Enemy;
-        score += enemy.PointsValue;
+        Score += enemy.PointsValue;
         spawned[enemy.GroupId].Remove(enemy);
         Debug.Log("enemy killed");
         assetDispenser.PutEnemy(enemy);
-        eventListener.ScoreSet(score);
+        eventListener.ScoreSet(Score);
+
+        if (Score > TopScore)
+        {
+            TopScore = Score;
+        }
     }
 }

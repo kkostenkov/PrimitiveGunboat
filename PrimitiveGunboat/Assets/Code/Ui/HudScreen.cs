@@ -39,7 +39,7 @@ public class HudScreen : UiScreen
     {
         for (int i = 0; i < healthMarks.Count; i++)
         {
-            healthMarks[i].gameObject.SetActive(i <= currentHealth);
+            healthMarks[i].gameObject.SetActive(i < currentHealth);
         }
     }
 

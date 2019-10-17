@@ -10,4 +10,6 @@ public interface ISessionPlayer
 
     int TopScore { get; }
     int CurrentHealth { get; }
+    int CurrentScore { get; }
+    int LastScore { get; }
 }

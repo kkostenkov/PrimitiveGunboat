@@ -43,7 +43,7 @@ public class UiCore : MonoBehaviour
                 hudScreen.Show();
                 break;
             case UiState.GameOver:
-                //gameOverScreen.SetHighscore(1337);
+                gameOverScreen.SetHighscore(sessionPlayer.LastScore);
                 gameOverScreen.Show();
                 break;
         }
