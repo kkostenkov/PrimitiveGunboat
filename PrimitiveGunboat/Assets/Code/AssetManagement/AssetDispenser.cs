@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IAssetDispenser
 {
-    SpaceStationController GetSpaceStation();
+    SpaceStationController GetSpaceStationPrefab();
     Torpedo TakeProjectile();
     void PutProjectile(Torpedo torpedo);
     Enemy TakeEnemy(string gruipId);
@@ -49,14 +49,17 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
         loader = new AsyncLoader(this);
     }
 
-    public SpaceStationController GetSpaceStation()
+    public SpaceStationController GetSpaceStationPrefab()
     {
          return spaceStation;
     }
 
     public Torpedo TakeProjectile()
     {
-        return pools.TakeFrom(TORPEDO_POOL).GetComponent<Torpedo>();
+        var go = pools.TakeFrom(TORPEDO_POOL);
+        var projectile = go.GetComponent<Torpedo>();
+        RequestLoadingIfNeeded(projectile);
+        return projectile;
     }
 
     public void PutProjectile(Torpedo torpedo)
@@ -68,12 +71,19 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
     public Enemy TakeEnemy(string groupId)
     {
         var go = pools.TakeFrom(groupId);
-        return go.GetComponent<Enemy>();
+        var enemy = go.GetComponent<Enemy>();
+        RequestLoadingIfNeeded(enemy);
+        return enemy;
     }
 
     public void PutEnemy(Enemy enemy)
     {
         enemy.Release();
         pools.PutTo(enemy.GroupId, enemy.gameObject);
+    }
+
+    private void RequestLoadingIfNeeded(VisibleObject visibleObject)
+    {
+        visibleObject.VisualsRequest.RequestLoad(this);
     }
 }

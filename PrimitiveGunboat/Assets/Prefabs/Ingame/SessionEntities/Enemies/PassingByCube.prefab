@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345c3ff5f27b7824c9f1123cdfe26977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualsRequest: {fileID: 2194903100421089389}
   groupId: PassingByCube
   Speed: 10
   MaxHp: 1
@@ -89,6 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3171734699205294210}
+  - component: {fileID: 2194903100421089389}
   m_Layer: 0
   m_Name: VisualAnchor
   m_TagString: Untagged
@@ -111,6 +113,20 @@ Transform:
   m_Father: {fileID: 8461609843704459996}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2194903100421089389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420815178219887866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd5c6658b650b4f48979e34e1dbbea35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assetsToLoad:
+  - {fileID: 3783146610745766331}
 --- !u!1 &3783146610745766331
 GameObject:
   m_ObjectHideFlags: 0

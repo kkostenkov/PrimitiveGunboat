@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class MovingObject : MonoBehaviour
+public class MovingObject : VisibleObject
 {
     protected Transform selfTransform;
     protected Vector3 movementDirection;

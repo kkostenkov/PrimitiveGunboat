@@ -6,6 +6,8 @@ public class SpaceStationController : MonoBehaviour, IDamageTaker
     [SerializeField]
     private ProjectileLauncher gun;
     [SerializeField]
+    private VisualsRequest visualsRequest;
+    [SerializeField]
     private int MaxHp;
     public int CurrentHp { get { return currentHp; } }
     private int currentHp;
@@ -19,7 +21,8 @@ public class SpaceStationController : MonoBehaviour, IDamageTaker
     {
         this.commandSource = commandSource;
         this.eventListener = eventListener;
-        gun.Initialize(assetDispenser, bounds, eventListener);        
+        gun.Initialize(assetDispenser, bounds, eventListener);   
+        this.visualsRequest.RequestLoad(assetDispenser);
     }
 
     internal void Reset()

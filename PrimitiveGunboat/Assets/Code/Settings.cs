@@ -3,12 +3,14 @@
 public static class Settings
 {
     internal static float TorpedoSpeed = 10f;
-    internal static int FiringQueueLimit = 100;
+    // by design "keep track of ALL firing actions"
+    // just sanity check
+    internal static int FiringQueueLimit = 10; 
     internal static float LauncherCooldown = 0.5f; // seconds
     internal static float EnemyWaveSpawnCooldown = 0.5f; // seconds
     internal static float ChanceOfPreciseEnemy = 5; // percent
 
-    internal static bool ImitateLongerLoadingTime = true;
+    internal static bool ImitateLongerLoadingTime = false;
 
     internal static List<GroupSpawnSettings> SpawnSettings = new List<GroupSpawnSettings>()
     {

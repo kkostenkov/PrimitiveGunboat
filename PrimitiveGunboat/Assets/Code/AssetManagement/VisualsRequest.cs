@@ -9,17 +9,17 @@ public class VisualsRequest : MonoBehaviour
     // asset or prefab names etc.
    [SerializeField]
    private List<GameObject> assetsToLoad; 
-   private bool isLoadingRequested;
+   public bool Started {get ; private set; }
 
    public void RequestLoad(IAssetDispenser assetDispenser)
     {
-        if (isLoadingRequested)
+        if (Started)
         {
             return;
         }
         PrepareForLoadingImitation();       
         assetDispenser.LoadAsync(assetsToLoad, OnAssetOrComponentLoaded);
-        isLoadingRequested = true;
+        Started = true;
     }
 
     private void PrepareForLoadingImitation()

@@ -44,11 +44,12 @@ public class AsyncLoader
                 yield return null;
                 if (Settings.ImitateLongerLoadingTime)
                 {
-                    yield return new WaitForSeconds(0.5f);    
+                    yield return new WaitForSeconds(0.1f);    
                 }
                 request.Callback?.Invoke(assetRequest);
             }
         }
+        loadingCoroutine = null;
     }
 
     private class LoadRequest

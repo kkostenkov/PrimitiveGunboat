@@ -55,7 +55,7 @@ public class SessionController : MonoBehaviour, ISessionPlayer
 
         if (!station)
         {
-            var stationPrefab = assetDispenser.GetSpaceStation();
+            var stationPrefab = assetDispenser.GetSpaceStationPrefab();
             station = GameObject.Instantiate(stationPrefab, Vector3.zero, 
                 Quaternion.identity, sessionSpaceTransfrom);
             station.Killed += OnStationKilled;
