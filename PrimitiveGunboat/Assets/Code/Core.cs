@@ -18,4 +18,13 @@ public class Core : MonoBehaviour
         uiCore.Initialize(sessionController);
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
+
 }

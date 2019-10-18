@@ -1,5 +1,4 @@
-﻿#if UNITY_EDITOR
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DevVisualRequester : MonoBehaviour
 {
@@ -17,6 +16,3 @@ public class DevVisualRequester : MonoBehaviour
         }
     }
 }
-#else
-This script will not sneak to build
-#endif

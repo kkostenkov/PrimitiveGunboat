@@ -54,7 +54,7 @@ public class ScreenBounds : IScreenBoundsSchecker
     {
         var sidesMaxIndex = 3;
         var side = rand.Next(sidesMaxIndex);
-        var otherSide = rand.Next(sidesMaxIndex - 1);
+        var otherSide = side == 0 ? sidesMaxIndex : rand.Next(sidesMaxIndex - 1);
         if (otherSide == side)
         {
             otherSide = sidesMaxIndex;
@@ -87,10 +87,10 @@ public class ScreenBounds : IScreenBoundsSchecker
         switch (side)
         {
             case ScreenSide.Top:
-                result.y = maxWorldOffsetCoords.y;
+                result.z = maxWorldOffsetCoords.z;
                 break;
             case ScreenSide.Bottom:
-                result.y = minWorldOffsetCoords.y;
+                result.z = minWorldOffsetCoords.z;
                 break;
             case ScreenSide.Left:
                 result.x = minWorldOffsetCoords.x;
