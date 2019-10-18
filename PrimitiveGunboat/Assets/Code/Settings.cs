@@ -8,6 +8,8 @@ public static class Settings
     internal static float EnemyWaveSpawnCooldown = 0.5f; // seconds
     internal static float ChanceOfPreciseEnemy = 5; // percent
 
+    internal static bool ImitateLongerLoadingTime = true;
+
     internal static List<GroupSpawnSettings> SpawnSettings = new List<GroupSpawnSettings>()
     {
         new GroupSpawnSettings() {

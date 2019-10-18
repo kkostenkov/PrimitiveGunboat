@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -9,6 +10,7 @@ public interface IAssetDispenser
     void PutProjectile(Torpedo torpedo);
     Enemy TakeEnemy(string gruipId);
     void PutEnemy(Enemy enemy);
+    void LoadAsync(List<GameObject> assetsToLoad, Action<GameObject> cb);
 }
 
 
@@ -25,14 +27,26 @@ public class AssetDispenser : MonoBehaviour, IAssetDispenser
     private List<Enemy> enemies;
 
     private AssetPool pools;
+    private AsyncLoader loader;
+
+    public void LoadAsync(List<GameObject> assetsToLoad, Action<GameObject> cb)
+    {
+        loader.Load(assetsToLoad, cb);
+    }
+
     private void Awake()
     {
         pools = new AssetPool();
-        pools.CreatePool(TORPEDO_POOL, torpedo.gameObject);
+        if (torpedo)
+        {
+            pools.CreatePool(TORPEDO_POOL, torpedo.gameObject);
+        }
+        
         foreach (var enemy in enemies)
         {
             pools.CreatePool(enemy.GroupId, enemy.gameObject);
         }
+        loader = new AsyncLoader(this);
     }
 
     public SpaceStationController GetSpaceStation()
